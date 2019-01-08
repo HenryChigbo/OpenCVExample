@@ -17,12 +17,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +43,7 @@ public class HistogramActivity extends AppCompatActivity {
 
     private static final String TAG = HistogramActivity.class.getSimpleName();
 
-    private ImageView srcImage, desImage;
+    private ImageView srcImage, showGraph;
 
     private TextView srcText;
 
@@ -45,6 +52,20 @@ public class HistogramActivity extends AppCompatActivity {
     private Bitmap bitmap;
 
     private boolean isImageHistogram = false;
+
+    private BaseLoaderCallback baseLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                    break;
+                default:
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +80,7 @@ public class HistogramActivity extends AppCompatActivity {
         }
 
         srcImage = (ImageView)findViewById(R.id.source_image);
+        showGraph = (ImageView)findViewById(R.id.show_graph);
 
         srcText = (TextView)findViewById(R.id.source_text);
 
@@ -97,19 +119,72 @@ public class HistogramActivity extends AppCompatActivity {
                         Mat destinationMat = new Mat();
                         List<Mat> channels = new ArrayList<>();
 
-                        float []range = {0, 255};
-                        MatOfFloat histoRange = new MatOfFloat(range);
-
+                        MatOfFloat range = new MatOfFloat(0f, 255f);
+                        MatOfFloat histRange = new MatOfFloat(range);
 
                         Core.split(sourceMat, channels);
 
+                        MatOfInt[] allChannel = new MatOfInt[]{new MatOfInt(0), new MatOfInt(1), new MatOfInt(2)};
+                        Scalar[] colorScalar = new Scalar[]{new Scalar(220, 0, 0, 255), new Scalar(0, 220, 0, 255), new Scalar(0, 0, 220, 255)};
 
+                        Mat matB = new Mat(sourceSize, sourceMat.type());
+                        Mat matG = new Mat(sourceSize, sourceMat.type());
+                        Mat matR = new Mat(sourceSize, sourceMat.type());
+
+                        Imgproc.calcHist(channels, allChannel[0], new Mat(), matB, hisSize, histRange);
+                        Imgproc.calcHist(channels, allChannel[1], new Mat(), matG, hisSize, histRange);
+                        Imgproc.calcHist(channels, allChannel[2], new Mat(), matR, hisSize, histRange);
+
+
+                        int graphHeight = 1000;
+                        int graphWidth = 800;
+                        int binWidth = 3;
+
+                        Mat graphMat = new Mat(graphHeight, graphWidth, CvType.CV_8UC3, new Scalar(0, 0, 0));
+
+                        Core.normalize(matB, matB, graphMat.height(), 0, Core.NORM_INF);
+                        Core.normalize(matG, matG, graphMat.height(), 0, Core.NORM_INF);
+                        Core.normalize(matR, matR, graphMat.height(), 0, Core.NORM_INF);
+
+
+                        for(int i = 0; i < histogramSize; i++){
+                            Point bPoint1 = new Point(binWidth * (i - 1), graphHeight - Math.round(matB.get(i - 1, 0)[0]));
+                            Point bPoint2 = new Point(binWidth * i, graphHeight - Math.round(matB.get(i, 0)[0]));
+                            Core.line(graphMat, bPoint1, bPoint2, new Scalar(220, 0, 0, 255), 3, 8, 0);
+
+                            Point gPoint1 = new Point(binWidth * (i - 1), graphHeight - Math.round(matG.get(i - 1, 0)[0]));
+                            Point gPoint2 = new Point(binWidth * i, graphHeight - Math.round(matG.get(i, 0)[0]));
+                            Core.line(graphMat, gPoint1, gPoint2, new Scalar(0, 220, 0, 255), 3, 8, 0);
+
+                            Point rPoint1 = new Point(binWidth * (i - 1), graphHeight - Math.round(matR.get(i - 1, 0)[0]));
+                            Point rPoint2 = new Point(binWidth * i, graphHeight - Math.round(matR.get(i, 0)[0]));
+                            Core.line(graphMat, rPoint1, rPoint2, new Scalar(0, 0, 220, 255), 3, 8, 0);
+                        }
+
+                        //Display graph
+                        Bitmap graphBitmap = Bitmap.createBitmap(graphMat.cols(), graphMat.rows(), Bitmap.Config.ARGB_8888);
+                        Utils.matToBitmap(graphMat, graphBitmap);
+
+                        showGraph.setImageBitmap(graphBitmap);
                         //set the isImageHistogram
-                        isImageHistogram = true;
+                        //isImageHistogram = true;
                     }
                 }
             }
         });
+    }
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_11, this, baseLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            baseLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
     }
 
 

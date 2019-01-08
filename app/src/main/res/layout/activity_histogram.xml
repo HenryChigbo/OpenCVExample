@@ -25,7 +25,6 @@
         android:layout_height="200dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:background="@color/colorBlack"
         android:contentDescription="@string/app_name"/>
 
 
@@ -53,6 +52,13 @@
         android:contentDescription="@string/app_name"/>
 
 
+    <ImageView
+        android:id="@+id/show_graph"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/app_name"/>
 
 
 </LinearLayout>
