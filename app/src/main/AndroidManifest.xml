@@ -52,7 +52,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".OpenCVCamera" />
-        <activity android:name=".ImageCropActivity"></activity>
+        <activity android:name=".ImageCropActivity" />
+        <activity android:name=".histogram.HistogramActivity"></activity>
     </application>
 
 </manifest>

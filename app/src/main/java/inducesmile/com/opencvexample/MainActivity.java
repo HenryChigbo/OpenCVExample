@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import inducesmile.com.opencvexample.histogram.HistogramActivity;
 import inducesmile.com.opencvexample.utils.Constants;
 import inducesmile.com.opencvexample.utils.ImagePicker;
 import inducesmile.com.opencvexample.utils.Utilities;
@@ -71,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
         scannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openItent = ImagePicker.getPickImageIntent(MainActivity.this);
-                startActivityForResult(openItent, PICK_IMAGE_ID);
+                //Intent openItent = ImagePicker.getPickImageIntent(MainActivity.this);
+                //startActivityForResult(openItent, PICK_IMAGE_ID);
+                Intent histogramIntent = new Intent(MainActivity.this, HistogramActivity.class);
+                startActivity(histogramIntent);
             }
         });
     }

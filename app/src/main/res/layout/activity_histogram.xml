@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".histogram.HistogramActivity">
+
+    <Button
+        android:id="@+id/open_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:text="Select Image from gallery"
+        android:background="@color/colorAccent"
+        android:contentDescription="@string/app_name"/>
+
+
+
+    <ImageView
+        android:id="@+id/source_image"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:background="@color/colorBlack"
+        android:contentDescription="@string/app_name"/>
+
+
+    <TextView
+        android:id="@+id/source_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/source_image"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"/>
+
+
+    <Button
+        android:id="@+id/show_histogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorAccent"
+        android:text="@string/show_histogram"
+        android:padding="12dp"
+        android:textColor="@color/colorWhite"
+        android:contentDescription="@string/app_name"/>
+
+
+
+
+</LinearLayout>

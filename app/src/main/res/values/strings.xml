@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">OpenCVExample</string>
+    <string name="app_name">Android OpenCV Examples</string>
+    <string name="show_histogram">Show Histogram</string>
+    <string name="source_image">Source Image</string>
 </resources>

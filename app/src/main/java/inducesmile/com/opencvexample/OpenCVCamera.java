@@ -19,7 +19,7 @@ import org.opencv.core.Mat;
 
 import java.io.File;
 
-import inducesmile.com.opencvexample.preprocess.ImagePreprocessor;
+import inducesmile.com.opencvexample.utils.preprocess.ImagePreprocessor;
 import inducesmile.com.opencvexample.utils.Constants;
 import inducesmile.com.opencvexample.utils.FolderUtil;
 import inducesmile.com.opencvexample.utils.Utilities;

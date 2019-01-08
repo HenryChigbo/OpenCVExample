@@ -1,4 +1,4 @@
-package inducesmile.com.opencvexample.preprocess;
+package inducesmile.com.opencvexample.utils.preprocess;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
