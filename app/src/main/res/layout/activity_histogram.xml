@@ -13,11 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorWhite"
-        android:text="Select Image from gallery"
+        android:text="@string/select_gallery"
         android:background="@color/colorAccent"
         android:contentDescription="@string/app_name"/>
-
-
 
     <ImageView
         android:id="@+id/source_image"
@@ -26,7 +24,6 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"/>
-
 
     <TextView
         android:id="@+id/source_text"
@@ -37,7 +34,6 @@
         android:visibility="gone"
         android:layout_marginTop="8dp"
         android:layout_gravity="center"/>
-
 
     <Button
         android:id="@+id/show_histogram"
@@ -51,7 +47,6 @@
         android:textColor="@color/colorWhite"
         android:contentDescription="@string/app_name"/>
 
-
     <ImageView
         android:id="@+id/show_graph"
         android:layout_width="300dp"
@@ -59,6 +54,5 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"/>
-
 
 </LinearLayout>
